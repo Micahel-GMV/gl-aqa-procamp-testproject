@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -17,15 +19,8 @@ public class ConfigReader { //Class isn`t static `cause it`s needed sometimes to
 
     private Properties properties;
 
-    public static final ConfigReader DEFAULT = new ConfigReader();//I don`t really know will it be needed to have
+    //public static final ConfigReader DEFAULT = new ConfigReader();//I don`t really know will it be needed to have
                                            // different configs but I`m sure it`ll be useful to have default one
-    static { //In case of custom configs we`ll do requests with explicit uri`s.
-        // I hate static blocks but if RA uses statics so will I.
-        System.out.println("Setting port and uri " + DEFAULT.getUri() + ":" + DEFAULT.getPort());
-        RestAssured.baseURI = DEFAULT.getUri();
-        RestAssured.port = DEFAULT.getPort();
-    }
-
     public ConfigReader(){
         properties = new Properties();
         String propertiesFilePath = Paths.get("").toAbsolutePath() + File.separator + "config" + File.separator;
@@ -37,7 +32,7 @@ public class ConfigReader { //Class isn`t static `cause it`s needed sometimes to
             default: {
                 String errorMessage = "Unknown env value " + getEnv() + " .";
                 log.error(errorMessage);
-                throw new RuntimeException(errorMessage);
+                throw new IllegalArgumentException(errorMessage);
             }
         }
         try {
@@ -47,6 +42,10 @@ public class ConfigReader { //Class isn`t static `cause it`s needed sometimes to
             log.error("Couldn`t read properties. Exiting.", e);
             System.exit(1);
         }
+
+        log.info("Setting base port and uri " + getUri() + ":" + getPort());
+        RestAssured.baseURI = getUri();
+        RestAssured.port = getPort();
     }
 
     public String getEnv(){
@@ -65,8 +64,10 @@ public class ConfigReader { //Class isn`t static `cause it`s needed sometimes to
         return properties.getProperty(key);
     }
 
-    public static void main(String[] args) {
-        System.out.println(DEFAULT.getUri() + ":" + DEFAULT.getPort());
+    public static void main(String[] args) throws IOException {
+        String propertiesFilePath = Paths.get("").toAbsolutePath() + File.separator + "config" + File.separator + "runtime.properties";
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(propertiesFilePath));
+        System.out.println(properties.getProperty("env"));
     }
-
 }
