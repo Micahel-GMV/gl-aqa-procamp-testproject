@@ -4,26 +4,24 @@ import io.restassured.RestAssured;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Properties;
 
 public class ConfigReader { //Class isn`t static `cause it`s needed sometimes to have different sets of properties.
-                            //In case of simple config it`s useful to use a pack of static finals that could be accessed
-                            // like String uri = ConfigReader.URI;
+    //In case of simple config it`s useful to use a pack of static finals that could be accessed
+    // like String uri = ConfigReader.URI;
 
     private static final Logger log = LogManager.getLogger(ConfigReader.class);
 
+    private static final String CONFIG_PATH = Paths.get("").toAbsolutePath() + File.separator + "config" + File.separator;
     private Properties properties;
 
-    //public static final ConfigReader DEFAULT = new ConfigReader();//I don`t really know will it be needed to have
-                                           // different configs but I`m sure it`ll be useful to have default one
+    //public static final ConfigReader config = new ConfigReader();//I don`t really know will it be needed to have
+    // different configs but I`m sure it`ll be useful to have default one
     public ConfigReader(){
         properties = new Properties();
-        String propertiesFilePath = Paths.get("").toAbsolutePath() + File.separator + "config" + File.separator;
+        String propertiesFilePath = CONFIG_PATH;
         switch (getEnv()){
             case "dev": propertiesFilePath += "dev_env.properties";
                 break;
@@ -62,6 +60,24 @@ public class ConfigReader { //Class isn`t static `cause it`s needed sometimes to
 
     public String getProperty(String key){
         return properties.getProperty(key);
+    }
+
+    public String getConfigFileAsString(String fileName){
+        try( BufferedReader br =
+                     new BufferedReader( new InputStreamReader(new FileInputStream(CONFIG_PATH + fileName), "UTF-8" )))
+        {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while(( line = br.readLine()) != null ) {
+                sb.append( line );
+                sb.append( '\n' );
+            }
+            return sb.toString();
+        }
+        catch (IOException exception){
+            log.error("Couldn`t read application.xsd ");
+            return null;
+        }
     }
 
     public static void main(String[] args) throws IOException {

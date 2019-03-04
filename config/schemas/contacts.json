@@ -1,0 +1,1 @@
+{"data":[{"id":1,"info":{"email":"john.doe@unknown.com","firstName":"John","lastName":"Doe"},"refs":{"patch":"http://host:port/api/v1/contacts/1","get":"http://host:port/api/v1/contacts/1","delete":"http://host:port/api/v1/contacts/1","put":"http://host:port/api/v1/contacts/1"}}],"message":"","status":200}

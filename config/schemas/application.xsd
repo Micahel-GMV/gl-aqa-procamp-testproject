@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:jersey="http://jersey.java.net/" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import schemaLocation="schema1.xsd" namespace="http://jersey.java.net/" />
+    <xs:element name="application">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="doc">
+                </xs:element>
+                <xs:element name="grammars" />
+                <xs:element name="resources">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" name="resource">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element maxOccurs="unbounded" name="method">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element minOccurs="0" name="request">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element minOccurs="0" name="representation">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="mediaType" type="xs:string" use="required" />
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                                <xs:element minOccurs="0" maxOccurs="unbounded" name="param">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="name" type="xs:string" use="required" />
+                                                                        <xs:attribute name="style" type="xs:string" use="required" />
+                                                                        <xs:attribute name="type" type="xs:string" use="required" />
+                                                                        <xs:attribute name="default" type="xs:string" use="required" />
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="response">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="representation">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="mediaType" type="xs:string" use="required" />
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:string" use="required" />
+                                                <xs:attribute name="name" type="xs:string" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element minOccurs="0" name="resource">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="param">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="style" type="xs:string" use="required" />
+                                                            <xs:attribute name="type" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element maxOccurs="unbounded" name="method">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="response">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="representation">
+                                                                                <xs:complexType>
+                                                                                    <xs:attribute name="mediaType" type="xs:string" use="required" />
+                                                                                </xs:complexType>
+                                                                            </xs:element>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="id" type="xs:string" use="required" />
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="path" type="xs:string" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="path" type="xs:string" use="required" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="base" type="xs:string" use="required" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
